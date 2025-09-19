@@ -2,8 +2,8 @@
 
 # Goflex - Linux/macOS starter CLI
 
-# GoflexDir="$HOME/.goflex"
-GoflexDir="./.goflextest"
+GoflexDir="$HOME/.goflex"
+# GoflexDir="/home/sam/code/projects/goflex/bin/.goflextest"
 VersionsDir="$GoflexDir/versions"
 CurrentDir="$GoflexDir/current"
 CacheDir="$GoflexDir/cache"
@@ -14,10 +14,22 @@ function usage() {
     echo "Usage: goflex <command> [version]"
     echo "Commands:"
     echo "  install <version>  Install Go version"
-    echo "  use <version>      Switch Go version for current shell"
     echo "  default <version>  Set default Go version"
     echo "  list               List installed versions"
+    echo "  version            Show goflex version"
+    echo "  help               Show this help message"
     exit 1
+}
+
+function help() {
+    echo "Usage: goflex <command> [version]"
+    echo "Commands:"
+    echo "  install <version>  Install Go version"
+    echo "  default <version>  Set default Go version"
+    echo "  list               List installed versions"
+    echo "  version            Show goflex version"
+    echo "  help               Show this help message"
+    exit 0
 }
 
 if [ $# -lt 1 ]; then
@@ -90,22 +102,28 @@ case $COMMAND in
     #     echo "Available Go versions online:"
     #     curl -s https://go.dev/dl/?mode=json | grep -oP '"version":\s*"\Kgo[0-9\.rc]+' 
     #     ;;
-    use)
-        if [ -z "$VERSION" ]; then
-            echo "Specify version: goflex use <version>"
-            exit 1
-        fi
-
-        if [ ! -d "$VersionsDir/go$VERSION" ]; then
-            echo "Go version $VERSION not installed. Run goflex install $VERSION first."
-            exit 1
-        fi
-
-        export GO_HOME="$VersionsDir/go$VERSION"
-        export PATH="$GO_HOME/bin:$PATH"
-        echo "Using Go $VERSION for this shell session"
-        go version
+    help)
+        help
         ;;
+    version)
+        echo "goflex version 0.0.1alpha"
+        ;;
+    # use)
+    #     if [ -z "$VERSION" ]; then
+    #         echo "Specify version: goflex use <version>"
+    #         exit 1
+    #     fi
+
+    #     if [ ! -d "$VersionsDir/go$VERSION" ]; then
+    #         echo "Go version $VERSION not installed. Run goflex install $VERSION first."
+    #         exit 1
+    #     fi
+
+    #     export GO_HOME="$VersionsDir/go$VERSION"
+    #     export PATH="$GO_HOME/bin:$PATH"
+    #     echo "Using Go $VERSION for this shell session"
+    #     go version
+    #     ;;
     default)
         if [ -z "$VERSION" ]; then
             echo "Specify version: goflex default <version>"
@@ -117,15 +135,13 @@ case $COMMAND in
             exit 1
         fi
 
-        # Symlink method
         ln -sfn "$VersionsDir/go$VERSION" "$CurrentDir/go"
         echo "Default Go version set to $VERSION"
 
-        # Optional: update shell rc automatically
-        if ! grep -q 'Goflex current' "$HOME/.bashrc"; then
+        if ! grep -q 'Goflex' "$HOME/.bashrc"; then
+            echo "# Goflex" >> "$HOME/.bashrc"
             echo 'export GO_HOME="$HOME/.goflex/current/go"' >> "$HOME/.bashrc"
             echo 'export PATH="$GO_HOME/bin:$PATH"' >> "$HOME/.bashrc"
-            echo "# Goflex current version added to PATH" >> "$HOME/.bashrc"
         fi
         ;;
     install)
@@ -205,8 +221,16 @@ case $COMMAND in
         echo "Go $VERSION installed successfully!"
         ;;
 
-    *)
+    use)
         echo "Command not implemented yet"
+        usage
+        ;;
+    current)
+        echo "Command not implemented yet"
+        usage
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
         usage
         ;;
 esac
