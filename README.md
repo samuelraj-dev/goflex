@@ -1,6 +1,6 @@
-# Goflex v2
+# Goflex
 
-**Goflex v2** is a cross-platform Go version manager for Linux, macOS, and Windows.  
+**Goflexw** is a cross-platform Go version manager for Linux, macOS, and Windows.  
 It allows developers to install, switch, and manage multiple Go versions effortlessly, with project-level versioning, caching, checksum verification, and an interactive CLI.
 
 ---
@@ -21,7 +21,18 @@ It allows developers to install, switch, and manage multiple Go versions effortl
 
 ## Installation
 
-Clone the repository:
+### Note
+This is currently in alpha phase. Use at your own risk
+Conditions to use:
+ - linux user (non-root)
+ - install packages jq (optional but recommended), curl, wget
+ - only bash is supported
 
-```bash
-git clone https://github.com/samuelraj-dev/goflex.git ~/.goflex
+### Install
+```
+curl -fsSL https://raw.githubusercontent.com/samuelraj-dev/goflex/main/install.sh | bash
+``` 
+### Verify Installation
+```
+goflex version
+```
