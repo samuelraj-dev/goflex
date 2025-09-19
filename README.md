@@ -30,7 +30,7 @@ Conditions to use:
 
 ### Install
 ```
-curl -fsSL https://raw.githubusercontent.com/samuelraj-dev/goflex/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/samuelraj-dev/goflex/refs/heads/main/install.sh | bash
 ``` 
 ### Verify Installation
 ```
